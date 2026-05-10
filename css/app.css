@@ -37,10 +37,34 @@ animation: scaleIn 0.6s ease, pulse 2s infinite ease-in-out 0.6s;  max-width: 65
 }
 
 .invoice-top {
-  display: flex;
+  display: grid;
   gap: 20px;
   margin-bottom: 15px;
 }
+.invoice-down {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.invoice-date {
+  display: grid;
+  gap: 20px;
+  margin-bottom: 15px;
+  flex: 1;
+  background: #d7dce73a;
+  padding: 15px;
+  border-radius: 12px;
+}
+.invoice-date input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #334155;
+  text-align: right !important;
+  
+}
+  
+
 .card table {
   width: 100% ;
   justify-content: space-between;
@@ -76,23 +100,30 @@ animation: scaleIn 0.6s ease, pulse 2s infinite ease-in-out 0.6s;  max-width: 65
   margin-top: 8px;
   font-size: 16px;
   font-weight: 400;
-  color: #6b7280;
+  color: #c8d1e166;
 }
 .invoice-info,
 .invoice-payment {
   flex: 1;
-  background: #18243f;
+  background: #d7dce73a;
   padding: 15px;
   border-radius: 12px;
 }
-
+.invoice-discount {
+  display:grid;
+  flex: 1;
+  background: #d7dce73a;
+  padding: 10px;
+  border-radius: 12px;
+}
 .field {
   margin-bottom: 10px;
 }
 
 .field label {
   font-size: 14px;
-  color: #b1bed0;
+  color: #303844;
+  font-style: italic;
 }
 
 .field input,
