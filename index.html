@@ -21,7 +21,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.4/qrcode.min.js"></script>
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/auth.css">
-<link rel="stylesheet" href="mobile.css?v=11">
+<link rel="stylesheet" href="mobile.css?v=12">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -278,7 +278,12 @@
         </div>
 
         <!-- 🧾 CUSTOMER -->
-
+         <div class="invoice-date">
+  <div class="field">
+  <label>تاريخ الإصدار</label>
+    <input id="invoiceDate" type="date">
+</div>
+</div>
 <div class="invoice-top">
 
   <!-- 🧾 يمين -->
@@ -288,46 +293,12 @@
       <label>رقم الفاتورة</label>
       <input id="invoiceNo" readonly />
     </div>
-
-
-<div class="field">
-  <label>تاريخ الإصدار</label>
-    <input id="invoiceDate" type="date">
-</div>
-
-
-
-
-
               <div class="field">
               <label>اسم العميل</label>
                <input id="clientName" />
                         </div>
-
+    
                  </div>
-
-  <!-- 💰 يسار -->
-  <div class="invoice-payment">
-
-    <div class="field">
-      <label>طريقة الدفع</label>
-      <select id="paymentMethod">
-        <option>كاش</option>
-        <option>بطاقة</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label>الخصم</label>
- <input id="discountInput" type="number" oninput="updateTotals()" />    </div>
-
-    <div class="field">
-      <label>المدفوع</label>
-      <input id="paidAmount" type="number" oninput="updateTotals()" />
-         </div>
-
-  </div>
-
 </div>
 
         <!-- 💰 SUMMARY -->
@@ -372,7 +343,32 @@
           <div id="mobileItemsCards"></div>
 
         </div>
+
+
+
+
+
         <div class="card inner-card">
+
+                  <div class="invoice-down">
+          <div class="invoice-discount">
+    <div class="field">
+      <label>الخصم</label>
+ <input id="discountInput" type="number" oninput="updateTotals()" />   
+ </div>
+         <div class="field">
+      <label>المدفوع</label>
+      <input id="paidAmount" type="number" oninput="updateTotals()" />
+         </div>
+              <div class="field">
+      <label>طريقة الدفع</label>
+      <select id="paymentMethod">
+        <option>كاش</option>
+        <option>كــليك</option>
+      </select>
+    </div>
+  </div>
+  </div>
           <h3>الإجماليات</h3>
           <div class="totals-box">
 
