@@ -87,6 +87,29 @@
     text-align: right !important;
   }
 
+/* استهداف الحقل داخل الكلاس المخصص */
+.invoice-date .field input[type="date"] {
+    /* 1. إيقاف الشكل الافتراضي للموبايل */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    /* 2. ضمان بقاء الحقل داخل الحاوية */
+    display: block;
+    width: 100%; /* سيأخذ عرض الـ field فقط */
+    box-sizing: border-box; /* لضمان أن الـ padding لا يزيد العرض */
+
+    /* 3. تنظيف الهوامش التي يضيفها المتصفح تلقائياً */
+    margin: 0;
+    padding: 8px; /* تحكم بالمساحة الداخلية كما تحب */
+    
+    /* 4. إجبار المتصفح على استخدام الخط والحواف الخاصة بك */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px; /* مهم جداً لمنع الـ Zoom التلقائي في الآيفون */
+    background-color: #fff;
+    min-height: 40px; /* لضمان شكل متناسق */
+}
 
 #invoiceDate {
   -webkit-appearance: none;
