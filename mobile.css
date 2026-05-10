@@ -124,12 +124,23 @@
     box-sizing: border-box !important;
     position: static !important;
     transform: none !important;
-    text-align: right !important;  background-color: white; 
+    text-align: right !important;  
+    background-color: white; 
     border: 1px solid #334155;
     min-height: 2em; /* لضمان عدم صغر الحجم في بعض المتصفحات */
-
+    background-image: url('icons/calendar.png'); /* أيقونة تقويم */
+    background-repeat: no-repeat;
+    background-position: left 10px center; /* لليمين إذا كان الموقع عربي */
+    background-size: 20px;
+    padding-left: 40px; 
 }
-
+#invoiceDate::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: auto; height: auto;
+    color: transparent;
+    background: transparent;
+}
 
 
   input[type="date"] {
