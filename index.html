@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QMF Invoices</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/access.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/items.js"></script>
+  <script src="js/invoices.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.4/qrcode.min.js"></script>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/auth.css">
+<link rel="stylesheet" href="mobile.css?v=11">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="theme-color" content="#111827">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="QMF-Invoices">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+</head>
+<body>
+
+<div id="splash" class="splash-screen">
+    <img id="splashLogo" src="logo.png" />
+    <div class="loader"></div>
+
+</div>
+
+ <!-- 🔐 LOGIN PAGE -->
+  <div id="loginPage" class="page active-page"style="display:none;">
+    <div class="login-card">
+
+      <h2>Log in || تسجيل الدخول</h2>
+
+      <div id="loginError"></div>
+
+      <input id="email" placeholder="البريد الإلكتروني" />
+
+      <div class="password-field">
+        <input id="password" type="password" placeholder="كلمة المرور" />
+        <span class="icon-btn" onclick="togglePassword('password', this)">
+          <i data-lucide="eye"></i>
+        </span>
+      </div>
+
+      <button id="loginBtn" onclick="login()">
+        <span id="loginText">دخول</span>
+        <div id="loginLoader" class="loader" style="display:none;"></div>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- 🔑 ACCESS CODE -->
+  <div id="accessCodeModal" class="modal hidden">
+    <div class="modal-card">
+      <h3>🔑 أدخل كود الشركة</h3>
+      <input id="accessCodeInput" placeholder="يرجى ادخال كــود الشركة" />
+      <button onclick="verifyCode()">دخول</button>
+    </div>
+  </div>
+
+
+  <!-- 🚀 APP -->
+  <div id="app" style="display:none;">
+
+    <!-- 👑 ADMIN -->
+
+<div id="adminPanel" style="display:none;" class="card">
+
+  <h2>👑 Admin Dashboard</h2>
+<button type="button"  class="btn btn-danger" onclick="logout()">تسجيل خروج</button>
+
+  <!-- 📊 Stats -->
+   <div class="dashboard">
+  <div class="dashboard-grid">
+    <div class="dashboard-box">
+      <div class="muted">عــدد المســتخـدمين</div>
+      <div id="totalUsers">0</div>
+    </div>
+
+    <div class="dashboard-box">
+      <div class="muted">النــشــطين</div>
+      <div id="activeUsers">0</div>
+    </div>
+  </div>
+</div>
+  <!-- ➕ Create User -->
+  <div class="card" style="margin: top 10px;">
+    <h3>➕ إنشاء مستخدم</h3>
+   <div class="user-grid">
+    <input id="newUserEmail" placeholder="Email" />
+    <input id="newUserPassword" placeholder="Password" />
+    <input id="storeNameAdmin" placeholder="Store Name" />
+    <input id="storePhoneAdmin" placeholder="Phone" />
+    <input id="storeAddressAdmin" placeholder="Address" />
+    <input id="customCode" placeholder="Code (اختياري)" />
+    <input type="file" id="logoAdminInput" />
+    <div id="adminError"></div>
+    <button class="btn btn-success" type="button" onclick="createUser(event)">إنشاء + توليد حســاب</button>
+    
+  </div>
+ </div>
+  <!-- 👥 Users List -->
+  <div class="card" style="margin-top:15px;">
+    <h3>👥 المستخدمين</h3>
+    <div style="display:flex; gap:10px; margin-bottom:10px;">
+  <button class="btn btn-secondary" onclick="filterUsers('all')">الكل</button>
+  <button class="btn btn-success" onclick="filterUsers('active')">نشط</button>
+  <button class="btn btn-danger" onclick="filterUsers('disabled')">غير نشط</button>
+ </div>
+ <div id="usersList" input id="users-list-box" style="background-color: gainsboro;"></div>
+
+   
+  </div>
+ 
+ 
+      <!-- إعدادات -->
+      <div class="card">
+        <p class="muted">**اختر مستخدم للتعديل**</p>
+        <h3 style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; 
+        margin-bottom:12px;border-bottom:2px solid #5d4a4a;" id="selectedUserTitle">إعدادات المستخدم ⚙️ </h3>
+          <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; margin-bottom:12px;">
+            <button type="button" class="btn btn-success" onclick="saveAndHideStoreSettings(event)">حفظ الإعدادات</button>
+            <button type="button" class="btn btn-primary" onclick="updateSelectedUserPassword()">
+                                       تغيير كلمة السر
+                                            </button>
+
+          </div>
+        
+      
+        <div class="grid">
+          <div class="gridtwofull">
+            <label for="storeName">اسم المتجر</label>
+            <input id="storeName" type="text" placeholder="اكتب اسم المتجر" />
+          </div>
+                    <div class="gridtwofull">
+ <label for="adminNewPassword">كلمة سر جديدة</label>
+
+  <div style="display:flex; gap:8px;">
+    <input
+      id="adminNewPassword"
+      type="password"
+      placeholder="اتركها فارغة إذا لا تريد تغييرها"
+    >
+
+    <button
+      type="button"
+      class="password-toggle"
+      onclick="toggleAdminPasswordView(this)"
+      aria-label="إظهار كلمة السر"
+    >
+      <i data-lucide="eye"></i>
+    </button>
+
+  </div>
+          </div>
+          <div class="gridtwofull">
+            <label for="storePhone">رقم الهاتف</label>
+            <input id="storePhone" type="text" placeholder="مثال: 0788xxxxxxxx" />
+          </div>
+          <div class="gridtwofull">
+            <label for="storeAddress">العنوان</label>
+            <input id="storeAddress" type="text" placeholder="اكتب العنوان" />
+          </div>
+          <div class="gridtwofull">
+            <label>شعار المتجر</label>
+            <input type="file" id="logoInput" accept="image/*" onchange="uploadLogo(event)">
+          </div>
+          <div class="brand-box" style="margin-top:10px;">
+          <img class="storeLogo" src="logo.png" style="width:100px; border-radius:10px;" />
+          </div>
+        </div>
+        </div>
+<div class="card">
+  <h3>منتجات المستخدم</h3>
+
+  <div style="display:flex; gap:8px; margin-bottom:10px;">
+    <input id="adminProductNameInput" placeholder="اسم المنتج">
+    <input id="adminProductPriceInput" type="number" placeholder="السعر">
+    <button type="button" class="btn btn-primary" onclick="addAdminProduct()">
+      إضافة
+    </button>
+  </div>
+
+  <input id="adminSearchProduct" placeholder="بحث عن منتج" oninput="renderAdminProductList()">
+
+  <table style="width:100%; margin-top:10px;">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>اسم المنتج</th>
+        <th>السعر</th>
+        <th>الإجراء</th>
+      </tr>
+    </thead>
+
+    <tbody id="adminProductTable"></tbody>
+  </table>
+</div>
+      </div>
+    
+
+<!-- 👤 MAIN CONTENT -->
+<div id="mainContent" style="display:none;">
+
+  <div class="container">
+
+    <!-- 🔝 NAV -->
+    <div class="top-tabs no-print">
+      <button class="btn btn-primary" onclick="showTab('invoice')">فاتورة جديدة</button>
+      <button class="btn btn-secondary" onclick="showTab('saved')">الفواتير</button>
+      <button class="btn btn-secondary" onclick="showTab('products')">المنتجات</button>
+      <button onclick="logout()" class="btn btn-danger">تسجيل الخروج</button>
+    </div>
+
+  </div>
+
+  <!-- ========================= -->
+  <!-- 🧾 TAB: INVOICE -->
+  <!-- ========================= -->
+  <div id="tab-invoice">
+
+    <!-- 📊 KPI -->
+    <div class="card no-print">
+      <div class="dashboard-grid">
+        <div class="dashboard-box">
+          <div class="muted">عدد الفواتير</div>
+          <div id="dashboardCount" class="kpi-value">0</div>
+        </div>
+        <div class="dashboard-box">
+          <div class="muted">إجمالي المبيعات</div>
+          <div id="dashboardSales" class="kpi-value">0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🧾 POS Layout -->
+<div id="invoiceArea" class="invoice-container print-style">
+
+  <div class="pos-wrapper">
+      <!-- 🧾 RIGHT: INVOICE -->
+      <div class="card no-print" id="cashierCard">
+
+        <!-- 🏪 HEADER -->
+        <div class="header">
+          <div class="brand-box">
+            <img class="storeLogo" src="logo.png" />
+            <div>
+              <h2 id="invoiceStoreName">الفواتير</h2>
+              <div class="muted" id="invoiceStoreMeta"></div>
+
+            </div>
+          </div>
+
+          <div class="header-actions">
+            
+<button type="button" onclick="saveAndPrintInvoice()" class="btn btn-primary" style="margin: 7px;">
+  📄 تحميل و حفظ
+</button>
+
+            <button class="btn btn-whatsapp" onclick="saveInvoiceToSupabase()" style="margin: 7px;">حــفظ   فقــط</button>
+          </div>
+        </div>
+
+        <!-- 🧾 CUSTOMER -->
+
+<div class="invoice-top">
+
+  <!-- 🧾 يمين -->
+  <div class="invoice-info">
+
+    <div class="field">
+      <label>رقم الفاتورة</label>
+      <input id="invoiceNo" readonly />
+    </div>
+
+
+<div class="field">
+  <label>تاريخ الإصدار</label>
+    <input id="invoiceDate" type="date">
+</div>
+
+
+
+
+
+              <div class="field">
+              <label>اسم العميل</label>
+               <input id="clientName" />
+                        </div>
+
+                 </div>
+
+  <!-- 💰 يسار -->
+  <div class="invoice-payment">
+
+    <div class="field">
+      <label>طريقة الدفع</label>
+      <select id="paymentMethod">
+        <option>كاش</option>
+        <option>بطاقة</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>الخصم</label>
+ <input id="discountInput" type="number" oninput="updateTotals()" />    </div>
+
+    <div class="field">
+      <label>المدفوع</label>
+      <input id="paidAmount" type="number" oninput="updateTotals()" />
+         </div>
+
+  </div>
+
+</div>
+
+        <!-- 💰 SUMMARY -->
+
+        <!-- 📦 ITEMS -->
+        <div class="card ">
+          <div class="header">
+           <h3>العناصر</h3>
+             </div>
+
+          <table id="itemsEditTable" class="items-table">
+              <thead>
+                <tr>
+                  <th>الصنف</th>
+                  <th>الكمية</th>
+                  <th>السعر</th>
+                  <th>المجموع</th>
+                  <th>حذف</th>
+                </tr>
+              </thead>
+               <tbody id="itemsEditTableBody">
+                <!-- 🔥 ROW الإدخال -->
+                   <tr id="inputRow">
+
+                   <!-- الصنف -->
+                    <td>
+                                  <select id="itemSelect" onchange="onItemSelect(this)">
+                                    <option value="">اختر صنف</option>
+                                  </select>
+                              </td>
+
+                                         <td>1</td>
+                                          <td>-</td>
+                                           <td>-</td>
+                                         <td>-</td>
+
+                      </tr>
+
+                               </tbody>
+
+            </table>
+          <div id="mobileItemsCards"></div>
+
+        </div>
+        <div class="card inner-card">
+          <h3>الإجماليات</h3>
+          <div class="totals-box">
+
+
+              <div class="Sub-totals-box"> المجموع <span id="subtotal">0.00</span></div>
+              <div class="Sub-totals-box">الخصم <span id="discountTotal">0.00</span></div>
+              <div class="Sub-totals-box">الصافي <span id="grandTotal">0.00</span></div>
+              <div class="Sub-totals-box">المدفوع <span id="paidDisplay">0.00</span></div>
+              <div class="remaining">الباقي <span id="remainingAmount">0.00</span></div>
+
+               </div>
+               
+          <div class="qr-box">
+            <canvas id="qrCanvas"></canvas>
+          </div>
+        </div>
+</div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- 📄 TAB: SAVED -->
+  <!-- ========================= -->
+  <div id="tab-saved" style="display:none;">
+    <div class="card no-print">
+      <h2>الفواتير المحفوظة</h2>
+
+      <input id="searchSavedInvoices"
+        placeholder="بحث..."
+        oninput="renderSavedInvoices(event)" />
+
+      <div id="savedInvoicesContainer"></div>
+      <div id="savedInvoicePreview" class="saved-invoice-preview" style="display:none;"></div>
+
+    </div>
+  </div>
+
+  <!-- ========================= -->
+  <!-- 📦 TAB: PRODUCTS -->
+  <!-- ========================= -->
+  <div id="tab-products" style="display:none;">
+
+    <div class="card">
+      <h2>إضافة المنتجات</h2>
+<div class="card-Pro">
+      <input id="productNameInput" placeholder="اسم المنتج" />
+      <input id="productPriceInput" type="number" placeholder="السعر" />
+
+      <button class="btn btn-primary" onclick="addProduct()">➕ إضافة</button>
+
+    </div>
+</div>
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>الاسم</th>
+            <th>السعر</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="productTable"></tbody>
+      </table>
+    </div>
+       
+
+
+
+  </div>
+
+</div>
+  </div>
+  <div class="footer">
+  All rights reserved to © qasim.fu 2026
+ </div>
+</body>
+</html>

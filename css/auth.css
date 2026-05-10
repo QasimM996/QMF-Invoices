@@ -1,0 +1,363 @@
+/* =========================
+   🔐 APP VISIBILITY
+========================= */
+#app {
+  min-height: 100vh;
+  max-width: 1000px;
+  margin: auto;
+  display: none; /* مخفي لحد ما يتم التحقق من الصلاحية */
+}
+
+/* =========================
+   🔐 LOGIN PAGE
+========================= */
+#loginPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+}
+#loginPage {
+  transition: opacity 0.3s ease;
+}
+/* =========================
+   💎 CARD
+========================= */
+.login-card {
+  width: 100%;
+  position: fixed;     /* أو absolute */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 20px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  color: white;
+}
+
+/* =========================
+   ✏️ INPUTS
+========================= */
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+
+  border: none;
+  outline: none;
+
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.login-card input::placeholder {
+  color: #cbd5f5;
+}
+
+/* =========================
+   🔐 PASSWORD FIELD
+========================= */
+.password-field {
+  position: relative;
+}
+
+.password-field input {
+  padding-left: 40px;
+  flex: 1;
+
+}
+.password-toggle {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+/* =========================
+   🔥 ICON BUTTON (Premium)
+========================= */
+.icon-btn {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  bottom: 50%;
+  transform: translateY(-50%);
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+  cursor: pointer;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.2;
+  color: #cbd5f5;
+}
+
+/* =========================
+   🔘 BUTTON
+========================= */
+.login-card button {
+  width: 100%;
+  padding: 12px;
+
+  border-radius: 10px;
+  border: none;
+
+  background: #22c55e;
+  color: white;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  background: #16a34a;
+}
+
+/* =========================
+   ❗ ERROR
+========================= */
+#loginError {
+  color: #f87171;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}
+#adminError {
+  color: #f87171;
+  font-size: 18px;
+  margin-top: 10px;
+}
+/* =========================
+   🔗 LINKS
+========================= */
+.auth-links {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.auth-links span {
+  cursor: pointer;
+  color: #38bdf8;
+  font-size: 14px;
+}
+#invoiceArea {
+  background: white !important;
+  color: black !important;
+}
+/* =========================
+   ✨ ANIMATION
+========================= */
+.fade-in {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   ⏳ LOADER
+========================= */
+
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   🪟 MODAL
+========================= */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 99999;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal-card {
+  width: 90%;
+  max-width: 350px;
+  padding: 25px;
+
+  border-radius: 16px;
+
+  background: #111827;
+  color: white;
+}
+
+/* =========================
+   🎬 TRANSITIONS
+========================= */
+.page {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.hidden-page {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95) translateY(20px);
+}
+
+.active-page {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+
+/* LOGIN */
+
+
+.login-card input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+}
+.modal-card input {
+  margin-top: 10px;
+}
+
+.modal-card button {
+  margin-top: 10px;
+}
+
+.saved-invoice-preview {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.preview-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.preview-header h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.preview-address {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.preview-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.preview-meta div {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.preview-table th,
+.preview-table td {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  text-align: center;
+}
+
+.preview-table th {
+  background: #f3f4f6;
+}
+
+.preview-totals {
+  margin-top: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.preview-totals div {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.preview-totals div:last-child {
+  border-bottom: 0;
+}
