@@ -441,10 +441,12 @@ async function getInvoiceByPublicToken(token) {
       `;
     }).join('');
   }
+document.body.classList.remove('loading-print');
 
   async function initPrintPage() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
+   document.body.classList.add('loading-print');
 
     if (token) {
       const invoice = await getInvoiceByPublicToken(token);
