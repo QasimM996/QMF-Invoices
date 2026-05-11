@@ -272,6 +272,21 @@
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
+#printLoader {
+  text-align: center;
+  padding: 30px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+body.print-loaded #printLoader {
+  display: none;
+}
+
+body:not(.print-loaded) .invoice {
+  display: none;
+}
+
 </style>
 
 
@@ -446,7 +461,6 @@ document.body.classList.remove('loading-print');
   async function initPrintPage() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
-   document.body.classList.add('loading-print');
 
     if (token) {
       const invoice = await getInvoiceByPublicToken(token);
@@ -474,6 +488,7 @@ document.body.classList.remove('loading-print');
         remaining: invoiceData.remaining || '0.00',
         items: invoiceData.items || []
       });
+   document.body.classList.add('loading-print');
 
       return;
     }
@@ -486,6 +501,7 @@ document.body.classList.remove('loading-print');
     }
 
     renderInvoice(data);
+document.body.classList.add('print-loaded');
 
     window.addEventListener('load', function () {
       setTimeout(function () {
