@@ -102,9 +102,65 @@ window.renderProductList = function () {
         </td>
       </tr>
     `;
-  }).join('');
+  });
+const mobileContainer = document.getElementById('mobileProductCards');
+
+if (mobileContainer) {
+  if (!filtered.length) {
+    mobileContainer.innerHTML = '<div class="product-card-empty">لا توجد منتجات</div>';
+  } else {
+    mobileContainer.innerHTML = filtered.map(function (p, index) {
+      return `
+              <div class="product-mobile-card">
+      <input
+        id="mobile-product-name-${p.id}"
+        class="product-mobile-name"
+        value="${p.name || ''}"
+        placeholder="اسم المنتج"
+      />
+
+      <div class="product-mobile-bottom">
+        <input
+          id="mobile-product-price-${p.id}"
+          class="product-mobile-price"
+          type="number"
+          value="${p.price || 0}"
+          placeholder="السعر"
+        />
+
+        <button type="button" class="btn btn-success" onclick="saveMobileProductEdit('${p.id}')">
+          حفظ
+        </button>
+
+        <button type="button" class="btn btn-danger" onclick="deleteProduct('${p.id}')">
+          حذف
+        </button>
+      </div>
+    </div>
+      `;
+    }).join('');
+  }
+}
+
 };
 
+window.saveMobileProductEdit = function (id) {
+  const nameInput = document.getElementById(`mobile-product-name-${id}`);
+  const priceInput = document.getElementById(`mobile-product-price-${id}`);
+
+  const desktopName = document.getElementById(`product-name-${id}`);
+  const desktopPrice = document.getElementById(`product-price-${id}`);
+
+  if (desktopName && nameInput) {
+    desktopName.value = nameInput.value;
+  }
+
+  if (desktopPrice && priceInput) {
+    desktopPrice.value = priceInput.value;
+  }
+
+  saveProductEdit(id);
+};
 
 
 window.saveProductEdit = async function (id) {
