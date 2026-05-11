@@ -455,7 +455,7 @@ async function getInvoiceByPublicToken(token) {
       }
 
       const invoiceData = invoice.data || {};
-      const profile = invoice.profiles || {};
+      const profile = invoice.profile || {};
 
       renderInvoice({
         logo: profile.logo_url || 'logo.png',
