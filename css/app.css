@@ -125,6 +125,9 @@ animation: scaleIn 0.6s ease, pulse 2s infinite ease-in-out 0.6s;  max-width: 65
   color: #303844;
   font-style: italic;
 }
+#productTable input {
+  box-sizing: border-box;
+}
 
 .field input,
 .field select {
@@ -163,6 +166,8 @@ animation: scaleIn 0.6s ease, pulse 2s infinite ease-in-out 0.6s;  max-width: 65
   cursor: pointer;
 
 }
+
+
 
 .totals-box {
   background: #343b51;
