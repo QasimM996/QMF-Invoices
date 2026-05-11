@@ -360,26 +360,52 @@
 </div>
 
 <script>
-  async function getInvoiceByPublicToken(token) {
-    const url =
-`${window.SUPABASE_URL}/rest/v1/invoices?select=*&public_token=eq.${token}`;
+async function getInvoiceByPublicToken(token) {
+  const invoiceUrl =
+    `${window.SUPABASE_URL}/rest/v1/invoices?select=*&public_token=eq.${token}`;
 
-    const response = await fetch(url, {
-      headers: {
-        apikey: window.SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${window.SUPABASE_ANON_KEY}`
-      }
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      console.error(result);
-      return null;
+  const invoiceResponse = await fetch(invoiceUrl, {
+    headers: {
+      apikey: window.SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${window.SUPABASE_ANON_KEY}`
     }
+  });
 
-    return result[0] || null;
+  const invoices = await invoiceResponse.json();
+
+  if (!invoiceResponse.ok) {
+    console.error("PUBLIC INVOICE ERROR", invoices);
+    return null;
   }
+
+  const invoice = invoices[0];
+
+  if (!invoice) {
+    console.error("NO INVOICE FOUND FOR TOKEN", token);
+    return null;
+  }
+
+  const profileUrl =
+    `${window.SUPABASE_URL}/rest/v1/profiles?select=store_name,store_address,logo_url&id=eq.${invoice.profile_id}`;
+
+  const profileResponse = await fetch(profileUrl, {
+    headers: {
+      apikey: window.SUPABASE_ANON_KEY,
+      Authorization: `Bearer ${window.SUPABASE_ANON_KEY}`
+    }
+  });
+
+  const profiles = await profileResponse.json();
+
+  if (!profileResponse.ok) {
+    console.error("PUBLIC PROFILE ERROR", profiles);
+  }
+
+  invoice.profile = profiles[0] || {};
+
+  return invoice;
+}
+
 
   function renderInvoice(data) {
     const logo = document.getElementById('logo');
