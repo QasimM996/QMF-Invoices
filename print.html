@@ -362,7 +362,7 @@
 <script>
   async function getInvoiceByPublicToken(token) {
     const url =
-      `${window.SUPABASE_URL}/rest/v1/invoices?select=*,profiles(store_name,store_address,logo_url)&public_token=eq.${token}`;
+`${window.SUPABASE_URL}/rest/v1/invoices?select=*&public_token=eq.${token}`;
 
     const response = await fetch(url, {
       headers: {
