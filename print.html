@@ -272,12 +272,35 @@
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
-#printLoader {
+.print-loader {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 10px;
   text-align: center;
-  padding: 30px;
-  font-size: 18px;
-  font-weight: bold;
+  font-family: Arial, Tahoma, sans-serif;
+  color: linear-gradient(135deg, #0f172a, #1e293b);
+  font-style: italic;
 }
+
+.print-loader-logo {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 30%;
+}
+
+.print-loader-title {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.print-loader-text {
+  font-size: 14px;
+  color: #6b7280;
+}
+
 
 body.print-loaded #printLoader {
   display: none;
@@ -289,7 +312,11 @@ body.print-loaded #printLoader {
 </head>
 
 <body>
-    <div id="printLoader">جاري تحميل الفاتورة...</div>
+<div id="printLoader" class="print-loader">
+  <img src="logo+.png" alt="QMF" class="print-loader-logo">
+  <div class="print-loader-title">QMF-Invoice</div>
+  <div class="print-loader-text">جاري تحميل الفاتورة...</div>
+</div>
 
 <div class="invoice" id="printInvoiceBox" style="display:none;">
 
@@ -454,8 +481,8 @@ async function getInvoiceByPublicToken(token) {
       `;
     }).join('');
 
-  const loader = document.getElementById('printLoader');
- const invoiceBox = document.getElementById('printInvoiceBox');
+const loader = document.getElementById('printLoader');
+const invoiceBox = document.getElementById('printInvoiceBox');
 
 if (loader) {
   loader.style.display = 'none';
@@ -464,6 +491,7 @@ if (loader) {
 if (invoiceBox) {
   invoiceBox.style.display = 'block';
 }
+
 
   }
 document.body.classList.remove('loading-print');
