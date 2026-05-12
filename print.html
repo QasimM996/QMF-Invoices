@@ -297,13 +297,32 @@
 }
 
 .print-loader-text {
-  font-size: 24px;
+  font-size: 14px;
   color: #6b7280;
 }
 
 
 body.print-loaded #printLoader {
   display: none;
+}
+.back-btn {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 9999;
+  border: 1px solid #d1d5db;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #fdfdfd;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
 }
 
 </style>
@@ -400,6 +419,16 @@ body.print-loaded #printLoader {
 </div>
 
 <script>
+
+
+  function goBackToApp() {
+  if (window.history.length > 1) {
+    window.history.back();
+  } else {
+    window.location.href = './';
+  }
+}
+
 async function getInvoiceByPublicToken(token) {
   const invoiceUrl =
     `${window.SUPABASE_URL}/rest/v1/invoices?select=*&public_token=eq.${token}`;
@@ -553,4 +582,8 @@ document.body.classList.add('print-loaded');
 
 
 </body>
+<button type="button" class="back-btn no-print" onclick="goBackToApp()">
+  رجوع
+</button>
+
 </html>
