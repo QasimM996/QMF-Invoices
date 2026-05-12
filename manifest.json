@@ -1,7 +1,8 @@
 {
   "name": "QMF Invoices",
   "short_name": "QMF-Invoices",
-  "start_url": "/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#111827",
