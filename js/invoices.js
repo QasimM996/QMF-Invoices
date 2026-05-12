@@ -1324,7 +1324,12 @@ window.sendInvoiceLinkWhatsApp = function (id) {
   const whatsappUrl =
     `https://wa.me/?text=${encodeURIComponent(message)}`;
 
-  window.open(whatsappUrl, '_blank');
+const win = window.open(whatsappUrl, '_blank');
+
+if (!win) {
+  window.location.href = whatsappUrl;
+}
+
 };
 
 
