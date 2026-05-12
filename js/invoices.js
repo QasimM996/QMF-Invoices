@@ -985,34 +985,40 @@ window.saveCurrentDraft = function () {
 };
 
 window.saveAndPrintInvoice = async function () {
+  console.log("SAVE PRINT CLICKED");
 
-  const invoiceDate = document.getElementById('invoiceDate')?.value;
-  const clientName = document.getElementById('clientName')?.value?.trim();
-  const invoiceNo = document.getElementById('invoiceNo')?.value;
+  const invoiceDate = document.getElementById('invoiceDate')?.value || '';
+  const clientName = document.getElementById('clientName')?.value?.trim() || '';
+  const invoiceNo = document.getElementById('invoiceNo')?.value || '';
+  const items = window.invoiceItems || [];
+
+  console.log("SAVE PRINT VALIDATION:", {
+    invoiceDate,
+    clientName,
+    invoiceNo,
+    itemsLength: items.length
+  });
 
   if (!invoiceDate) {
-    if (printWindow) printWindow.close();
     alert('أدخل تاريخ الفاتورة قبل الحفظ والطباعة');
     return;
   }
 
   if (!clientName) {
-    if (printWindow) printWindow.close();
     alert('أدخل اسم العميل قبل الحفظ والطباعة');
     return;
   }
 
   if (!invoiceNo) {
-    if (printWindow) printWindow.close();
     alert('رقم الفاتورة غير موجود');
     return;
   }
 
-  if (!window.invoiceItems || window.invoiceItems.length === 0) {
-    if (printWindow) printWindow.close();
+  if (!items.length) {
     alert('أضف صنف واحد على الأقل');
     return;
   }
+
   const printWindow = window.open('', '_blank');
 
   const payload = {
@@ -1027,7 +1033,7 @@ window.saveAndPrintInvoice = async function () {
       total: document.getElementById('grandTotal')?.textContent || '0.00',
       paid: document.getElementById('paidDisplay')?.textContent || '0.00',
       remaining: document.getElementById('remainingAmount')?.textContent || '0.00',
-      items: window.invoiceItems
+      items: items
     }
   };
 
@@ -1035,6 +1041,7 @@ window.saveAndPrintInvoice = async function () {
 
   if (!savedInvoice) {
     if (printWindow) printWindow.close();
+    alert('فشل حفظ الفاتورة');
     return;
   }
 
@@ -1051,7 +1058,7 @@ window.saveAndPrintInvoice = async function () {
     total: document.getElementById('grandTotal')?.textContent || '0.00',
     paid: document.getElementById('paidDisplay')?.textContent || '0.00',
     remaining: document.getElementById('remainingAmount')?.textContent || '0.00',
-    items: window.invoiceItems || []
+    items: items
   };
 
   localStorage.setItem('printData', JSON.stringify(printData));
@@ -1063,10 +1070,19 @@ window.saveAndPrintInvoice = async function () {
     window.location.href = 'print.html';
   }
 
+  if (typeof renderSavedInvoices === 'function') {
+    await renderSavedInvoices();
+  }
+
+  if (typeof renderDashboard === 'function') {
+    await renderDashboard();
+  }
+
   if (typeof generateInvoiceNumber === 'function') {
     await generateInvoiceNumber();
   }
 };
+
 
 
 // =========================
