@@ -324,6 +324,55 @@ body.print-loaded #printLoader {
     display: none !important;
   }
 }
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+
+  .back-btn {
+    top: 14px;
+    right: 14px;
+    padding: 12px 18px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .invoice {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px;
+    margin-top: 56px;
+  }
+
+  .header h2,
+  #storeName {
+    font-size: 24px;
+  }
+
+  .store-address,
+  #storeAddress {
+    font-size: 14px;
+  }
+
+  .invoice-meta,
+  .info-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 10px 6px;
+  }
+
+  .totals {
+    width: 100%;
+    font-size: 15px;
+  }
+}
 
 </style>
 
