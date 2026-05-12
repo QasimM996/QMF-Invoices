@@ -985,7 +985,6 @@ window.saveCurrentDraft = function () {
 };
 
 window.saveAndPrintInvoice = async function () {
-  const printWindow = window.open('', '_blank');
 
   const invoiceDate = document.getElementById('invoiceDate')?.value;
   const clientName = document.getElementById('clientName')?.value?.trim();
@@ -1014,6 +1013,7 @@ window.saveAndPrintInvoice = async function () {
     alert('أضف صنف واحد على الأقل');
     return;
   }
+  const printWindow = window.open('', '_blank');
 
   const payload = {
     invoice_no: invoiceNo,
