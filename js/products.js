@@ -95,7 +95,7 @@ window.renderProductList = function () {
       <tr>
         <td>${index + 1}</td>
         <td><input id="product-name-${p.id}" value="${p.name || ''}" /></td>
-        <td><input id="product-price-${p.id}" type="number" value="${p.price || 0}" /></td>
+        <td><input id="product-price-${p.id}" type="number" inputmode="decimal" min="0" step="0.01" value="${p.price || 0}" /></td>
         <td style="display:flex; gap:6px;">
           <button type="button" class="btn btn-success" onclick="saveProductEdit('${p.id}')">حفظ</button>
           <button type="button" class="btn btn-danger" onclick="deleteProduct('${p.id}')">حذف</button>
@@ -124,6 +124,9 @@ if (mobileContainer) {
           id="mobile-product-price-${p.id}"
           class="product-mobile-price"
           type="number"
+              inputmode="decimal"
+  min="0"
+  step="0.01"
           value="${p.price || 0}"
           placeholder="السعر"
         />
