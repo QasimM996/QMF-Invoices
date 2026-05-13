@@ -27,10 +27,10 @@ window.renderItems = function () {
       <td>
         <input
           type="number"
-            inputmode="decimal"
-  min="0"
-  step="0.01"
           value="${item.qty}"
+             inputmode="decimal"
+          min="0"
+          step="0.01"
           onchange="updateItem(${index}, 'qty', this.value)"
           style="width: 85%;"
         />
@@ -40,10 +40,10 @@ window.renderItems = function () {
       <td>
         <input
           type="number"
-            inputmode="decimal"
-  min="0"
-  step="0.01"
           value="${item.price}"
+          inputmode="decimal"
+          min="0"
+          step="0.01"
           onchange="updateItem(${index}, 'price', this.value)"
         />
       </td>
@@ -81,24 +81,26 @@ window.renderItems = function () {
           <div class="mobile-item-grid">
             <div>
               <label>الكمية</label>
-              <input
+<input
   type="number"
   inputmode="decimal"
   min="0"
   step="0.01"
   value="${item.qty}"
   onchange="updateItem(${index}, 'qty', this.value)"
-              >
+>
+
             </div>
 
             <div>
               <label>السعر</label>
-  type="number"
-  inputmode="decimal"
-  min="0"
-  step="0.01"
-  value="${item.price}"
-  onchange="updateItem(${index}, 'price', this.value)"
+              <input
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="0.01"
+                value="${item.price}"
+                onchange="updateItem(${index}, 'price', this.value)"
               >
             </div>
           </div>
