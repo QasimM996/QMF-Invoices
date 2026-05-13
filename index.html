@@ -363,11 +363,15 @@
           <div class="invoice-discount">
     <div class="field">
       <label>الخصم</label>
- <input id="discountInput" type="number" oninput="updateTotals()" />   
+ <input id="discountInput" type="number"   inputmode="decimal"
+  min="0"
+  step="0.01" oninput="updateTotals()" />   
  </div>
          <div class="field">
       <label>المدفوع</label>
-      <input id="paidAmount" type="number" oninput="updateTotals()" />
+      <input id="paidAmount" type="number"   inputmode="decimal"
+  min="0"
+  step="0.01" oninput="updateTotals()" />
          </div>
               <div class="field">
       <label>طريقة الدفع</label>
@@ -426,7 +430,9 @@
       <h2>إضافة المنتجات</h2>
 <div class="card-Pro">
       <input id="productNameInput" placeholder="اسم المنتج" />
-      <input id="productPriceInput" type="number" placeholder="السعر" />
+      <input id="productPriceInput" type="number"  inputmode="decimal"
+  min="0"
+  step="0.01"  placeholder="السعر" />
 
       <button class="btn btn-primary" onclick="addProduct()">➕ إضافة</button>
 
