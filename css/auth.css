@@ -46,6 +46,34 @@
   color: white;
 }
 
+.login-brand {
+  text-align: center !important;
+  margin-bottom: 22px;
+}
+
+.login-brand img {
+  width: 186px;
+  object-fit: contain;
+}
+
+.login-brand h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.691);
+  font-style: italic;
+  text-align: center !important;
+
+}
+
+.login-brand p {
+  margin: 6px 0 0;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.691);
+  text-align: center !important;
+
+}
+
 /* =========================
    ✏️ INPUTS
 ========================= */
